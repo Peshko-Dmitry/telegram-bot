@@ -48,34 +48,6 @@ bot.command('services', async (ctx) => {
     }
 })
 
-//------------------------
-// bot.action('btn_1', async (ctx) => {
-//     try{
-//         await ctx.answerCbQuery()
-//         //отправляем запрос
-//         await axios.get('https://select.by/brest/kurs-dollara').then(html => {
-//             const list = cheerio.load(html.data)
-//                 let purchase = ''
-//                 let sale = ''
-//             // ищем по селектору данные
-//             list('body > div.container-fluid > div > div > div > main > div > article > section.best-exchange-rates.mb-3 > div > table > tbody > tr > td:nth-child(2) > span > span').each((i, element) => {
-//             //temperature 
-//             purchase = `${list(element).text()}`
-//             }) 
-//             list('body > div.container-fluid > div > div > div > main > div > article > section.best-exchange-rates.mb-3 > div > table > tbody > tr > td:nth-child(3) > span > span').each((i, element) => {
-//             //condition
-//             sale = `${list(element).text()}`
-//             })
-
-//             ctx.replyWithHTML(`${purchase}, ${sale}`)
-            
-//         })
-        
-//     }catch (error) {
-//         console.log(error);
-//       }
-// })
-//------------------------
 //Курсы вылют
 //переменные для ф-ции
 const selectorPurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)'
@@ -144,7 +116,7 @@ bot.action('btn_4', async (ctx) => {
             condition = `${list(element).text()}`
             })
 
-            ctx.replyWithHTML(`По данным weather111 сегодня в Бресте\n<b>${condition}</b>  ${temp}`)
+            ctx.replyWithHTML(`По данным weather.com сегодня в Бресте\n<b>${condition}</b>  ${temp}`)
             
         })
         
