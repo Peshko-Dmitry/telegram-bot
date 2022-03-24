@@ -15,9 +15,14 @@ bot.command('exchange', async (ctx) => {
     try {
         await ctx.replyWithHTML('<strong>Курсы валют в Бресте</strong>', Markup.inlineKeyboard(
             [
-                // [Markup.button.callback('Курс USD', 'btn_1')],
-                 [Markup.button.callback('Курс EUR', 'btn_2')]
-                //  Markup.button.callback('Курс RUB', 'btn_3')]
+                [Markup.button.callback('Курс USD', 'btn_1')]
+
+            ]
+        ))
+        await ctx.replyWithHTML('<strong>Курсы валют в Бресте</strong>', Markup.inlineKeyboard(
+            [
+                [Markup.button.callback('Курс EUR', 'btn_2')]
+
             ]
         ))
     } catch(e) {
@@ -50,32 +55,32 @@ bot.command('services', async (ctx) => {
 })
 
 //------------------------
-bot.action('btn_1', async (ctx) => {
-    try{
-        await ctx.answerCbQuery()
-        //отправляем запрос
-        await axios.get('https://select.by/brest/kurs-dollara').then(html => {
-            const list = cheerio.load(html.data)
-                let purchase = ''
-                let sale = ''
-            // ищем по селектору данные
-            list('body > div.container-fluid > div > div > div > main > div > article > section.best-exchange-rates.mb-3 > div > table > tbody > tr > td:nth-child(2) > span > span').each((i, element) => {
-            //temperature 
-            purchase = `${list(element).text()}`
-            }) 
-            list('body > div.container-fluid > div > div > div > main > div > article > section.best-exchange-rates.mb-3 > div > table > tbody > tr > td:nth-child(3) > span > span').each((i, element) => {
-            //condition
-            sale = `${list(element).text()}`
-            })
+// bot.action('btn_1', async (ctx) => {
+//     try{
+//         await ctx.answerCbQuery()
+//         //отправляем запрос
+//         await axios.get('https://select.by/brest/kurs-dollara').then(html => {
+//             const list = cheerio.load(html.data)
+//                 let purchase = ''
+//                 let sale = ''
+//             // ищем по селектору данные
+//             list('body > div.container-fluid > div > div > div > main > div > article > section.best-exchange-rates.mb-3 > div > table > tbody > tr > td:nth-child(2) > span > span').each((i, element) => {
+//             //temperature 
+//             purchase = `${list(element).text()}`
+//             }) 
+//             list('body > div.container-fluid > div > div > div > main > div > article > section.best-exchange-rates.mb-3 > div > table > tbody > tr > td:nth-child(3) > span > span').each((i, element) => {
+//             //condition
+//             sale = `${list(element).text()}`
+//             })
 
-            ctx.replyWithHTML(`${purchase}, ${sale}`)
+//             ctx.replyWithHTML(`${purchase}, ${sale}`)
             
-        })
+//         })
         
-    }catch (error) {
-        console.log(error);
-      }
-})
+//     }catch (error) {
+//         console.log(error);
+//       }
+// })
 //------------------------
 //Курсы вылют
 //переменные для ф-ции
@@ -123,7 +128,7 @@ function addAction(btn, src, currency){
     })
 }
 //вызываем ф-цию
-// addAction('btn_1', srcParsingUsd, textUsd)
+addAction('btn_1', srcParsingUsd, textUsd)
 addAction('btn_2', srcParsingEur, textEur)
 // addAction('btn_3', srcParsingRub, textRub)
 //Погода
