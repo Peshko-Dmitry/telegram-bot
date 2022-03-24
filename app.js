@@ -51,22 +51,22 @@ bot.command('services', async (ctx) => {
 bot.action('btn_1', async (ctx) => {
     try{
         await ctx.answerCbQuery()
+        //отправляем запрос
         await axios.get('https://myfin.by/currency/usd/brest').then(html => {
             const list = cheerio.load(html.data)
-            let purchase = ''
-            let sale = ''
-            // let rub = ''
+                let purchase = ''
+                let sale = ''
+            // ищем по селектору данные
             list('#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)').each((i, element) => {
-            //курс покупки
+            //temperature 
             purchase = `${list(element).text()}`
             }) 
             list('#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3)').each((i, element) => {
-            //курс продажи
+            //condition
             sale = `${list(element).text()}`
             })
-            //показываем курсы валют
 
-            ctx.replyWithHTML(`По данным Myfin курс 'USD'\nна сегодня в Бресте\n<b>Курс покупки 'USD':</b> ${purchase} BYN\n<b>Курс продажи 'USD':</b> ${sale} BYN`)
+            ctx.replyWithHTML(`${purchase}, ${purchase}`)
             
         })
         
@@ -77,53 +77,53 @@ bot.action('btn_1', async (ctx) => {
 //------------------------
 //Курсы вылют
 //переменные для ф-ции
-const selectorPurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)'
-const salePurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3)'
-//USD
-const srcParsingUsd = 'https://myfin.by/currency/usd/brest'
-const textUsd = 'USD'
-//EUR
-const srcParsingEur = 'https://myfin.by/currency/eur/brest'
-const textEur = 'EUR'
-//RUB
-const srcParsingRub = 'https://myfin.by/currency/rub/brest'
-const textRub = 'RUB'
+// const selectorPurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)'
+// const salePurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3)'
+// //USD
+// const srcParsingUsd = 'https://myfin.by/currency/usd/brest'
+// const textUsd = 'USD'
+// //EUR
+// const srcParsingEur = 'https://myfin.by/currency/eur/brest'
+// const textEur = 'EUR'
+// //RUB
+// const srcParsingRub = 'https://myfin.by/currency/rub/brest'
+// const textRub = 'RUB'
 
-//общая функция для валют
-function addAction(btn, src, currency){
-    bot.action(btn, async (ctx) => {
-        try{
-            await ctx.answerCbQuery()
-            await axios.get(src).then(html => {
-                const list = cheerio.load(html.data)
-                let purchase = ''
-                let sale = ''
-                let rub = ''
-                list(selectorPurchase).each((i, element) => {
-                //курс покупки
-                purchase = `${list(element).text()}`
-                }) 
-                list(salePurchase).each((i, element) => {
-                //курс продажи
-                sale = `${list(element).text()}`
-                })
-                //показываем курсы валют
-                if(currency === 'RUB'){
-                    rub = '100 '
-                }
-                ctx.replyWithHTML(`По данным Myfin курс ${rub}${currency}\nна сегодня в Бресте\n<b>Курс покупки ${currency}:</b> ${purchase} BYN\n<b>Курс продажи ${currency}:</b> ${sale} BYN`)
+// //общая функция для валют
+// function addAction(btn, src, currency){
+//     bot.action(btn, async (ctx) => {
+//         try{
+//             await ctx.answerCbQuery()
+//             await axios.get(src).then(html => {
+//                 const list = cheerio.load(html.data)
+//                 let purchase = ''
+//                 let sale = ''
+//                 let rub = ''
+//                 list(selectorPurchase).each((i, element) => {
+//                 //курс покупки
+//                 purchase = `${list(element).text()}`
+//                 }) 
+//                 list(salePurchase).each((i, element) => {
+//                 //курс продажи
+//                 sale = `${list(element).text()}`
+//                 })
+//                 //показываем курсы валют
+//                 if(currency === 'RUB'){
+//                     rub = '100 '
+//                 }
+//                 ctx.replyWithHTML(`По данным Myfin курс ${rub}${currency}\nна сегодня в Бресте\n<b>Курс покупки ${currency}:</b> ${purchase} BYN\n<b>Курс продажи ${currency}:</b> ${sale} BYN`)
                 
-            })
+//             })
             
-        }catch (error) {
-            console.log(error);
-          }
-    })
-}
-//вызываем ф-цию
-// addAction('btn_1', srcParsingUsd, textUsd)
-addAction('btn_2', srcParsingEur, textEur)
-addAction('btn_3', srcParsingRub, textRub)
+//         }catch (error) {
+//             console.log(error);
+//           }
+//     })
+// }
+// //вызываем ф-цию
+// // addAction('btn_1', srcParsingUsd, textUsd)
+// addAction('btn_2', srcParsingEur, textEur)
+// addAction('btn_3', srcParsingRub, textRub)
 //Погода
 bot.action('btn_4', async (ctx) => {
     try{
@@ -143,7 +143,7 @@ bot.action('btn_4', async (ctx) => {
             condition = `${list(element).text()}`
             })
 
-            ctx.replyWithHTML(`По данным weather.com сегодня в Бресте\n<b>${condition}</b>  ${temp}`)
+            ctx.replyWithHTML(`По данным weather сегодня в Бресте\n<b>${condition}</b>  ${temp}`)
             
         })
         
