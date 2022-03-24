@@ -121,7 +121,7 @@ function addAction(btn, src, currency){
     })
 }
 //вызываем ф-цию
-addAction('btn_1', srcParsingUsd, textUsd)
+// addAction('btn_1', srcParsingUsd, textUsd)
 addAction('btn_2', srcParsingEur, textEur)
 addAction('btn_3', srcParsingRub, textRub)
 //Погода
