@@ -59,10 +59,7 @@ const textEur = 'EUR'
 //RUB
 const srcParsingRub = 'https://myfin.by/currency/rub/brest'
 const textRub = 'RUB'
-//вызываем ф-цию
-addAction('btn_1', srcParsingUsd, textUsd)
-addAction('btn_2', srcParsingEur, textEur)
-addAction('btn_3', srcParsingRub, textRub)
+
 //общая функция для валют
 function addAction(btn, src, currency){
     bot.action(btn, async (ctx) => {
@@ -94,6 +91,10 @@ function addAction(btn, src, currency){
           }
     })
 }
+//вызываем ф-цию
+addAction('btn_1', srcParsingUsd, textUsd)
+addAction('btn_2', srcParsingEur, textEur)
+addAction('btn_3', srcParsingRub, textRub)
 //Погода
 bot.action('btn_4', async (ctx) => {
     try{
