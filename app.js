@@ -15,13 +15,7 @@ bot.command('exchange', async (ctx) => {
     try {
         await ctx.replyWithHTML('<strong>Курсы валют в Бресте</strong>', Markup.inlineKeyboard(
             [
-                [Markup.button.callback('Курс USD', 'btn_1')]
-
-            ]
-        ))
-        await ctx.replyWithHTML('<strong>Курсы валют в Бресте</strong>', Markup.inlineKeyboard(
-            [
-                [Markup.button.callback('Курс EUR', 'btn_2')]
+                [Markup.button.callback('Курс USD', 'btn_1'), Markup.button.callback('Курс EUR', 'btn_2'), Markup.button.callback('Курс RUB', 'btn_3')]
 
             ]
         ))
@@ -130,7 +124,7 @@ function addAction(btn, src, currency){
 //вызываем ф-цию
 addAction('btn_1', srcParsingUsd, textUsd)
 addAction('btn_2', srcParsingEur, textEur)
-// addAction('btn_3', srcParsingRub, textRub)
+addAction('btn_3', srcParsingRub, textRub)
 //Погода
 bot.action('btn_4', async (ctx) => {
     try{
