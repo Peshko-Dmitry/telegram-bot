@@ -49,6 +49,36 @@ bot.command('services', async (ctx) => {
         console.error(e)
     }
 })
+//------------------------
+bot.action('btn_1', async (ctx) => {
+    try{
+        await ctx.answerCbQuery()
+        await axios.get('https://myfin.by/currency/usd/brest').then(html => {
+            const list = cheerio.load(html.data)
+            let purchase = ''
+            let sale = ''
+            // let rub = ''
+            list('#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)').each((i, element) => {
+            //курс покупки
+            purchase = `${list(element).text()}`
+            }) 
+            list('#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3)').each((i, element) => {
+            //курс продажи
+            sale = `${list(element).text()}`
+            })
+            //показываем курсы валют
+            // if(currency === 'RUB'){
+            //     rub = '100 '
+            // }
+            ctx.replyWithHTML(`По данным Myfin курс USD\nна сегодня в Бресте\n<b>Курс покупки USD:</b> ${purchase} BYN\n<b>Курс продажи USD:</b> ${sale} BYN`)
+            
+        })
+        
+    }catch (error) {
+        console.log(error);
+      }
+})
+//------------------------
 
 //Курсы вылют
 //переменные для ф-ции
@@ -96,9 +126,9 @@ function addAction(btn, src, currency){
     })
 }
 //вызываем ф-цию
-addAction('btn_1', srcParsingUsd, textUsd)
-addAction('btn_2', srcParsingEur, textEur)
-addAction('btn_3', srcParsingRub, textRub)
+// addAction('btn_1', srcParsingUsd, textUsd)
+// addAction('btn_2', srcParsingEur, textEur)
+// addAction('btn_3', srcParsingRub, textRub)
 //Погода
 bot.action('btn_4', async (ctx) => {
     try{
