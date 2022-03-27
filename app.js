@@ -16,8 +16,8 @@ bot.command('exchange', async (ctx) => {
         await ctx.replyWithHTML('<strong>Курсы валют в Бресте</strong>', Markup.inlineKeyboard(
             [
                 [Markup.button.callback('Курс USD', 'btn_1')],
-                [Markup.button.callback('Курс EUR', 'btn_2')],
-                [Markup.button.callback('Курс RUB', 'btn_3')]
+                // [Markup.button.callback('Курс EUR', 'btn_2')],
+                // [Markup.button.callback('Курс RUB', 'btn_3')]
 
             ]
         ))
