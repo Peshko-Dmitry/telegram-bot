@@ -15,9 +15,7 @@ bot.command('exchange', async (ctx) => {
     try {
         await ctx.replyWithHTML('<strong>Курсы валют в Бресте</strong>', Markup.inlineKeyboard(
             [
-                [Markup.button.callback('Курс USD', 'btn_1')],
-                // [Markup.button.callback('Курс EUR', 'btn_2')],
-                // [Markup.button.callback('Курс RUB', 'btn_3')]
+                [Markup.button.callback('Курс USD', 'btn_1'), Markup.button.callback('Курс EUR', 'btn_2'), Markup.button.callback('Курс RUB', 'btn_3')]
 
             ]
         ))
@@ -77,54 +75,112 @@ bot.action('btn_1', async (ctx) => {
     }catch (error) {
         console.log(error);
       }
+}),
+
+bot.action('btn_2', async (ctx) => {
+    try{
+        await ctx.answerCbQuery()
+        await axios.get('https://myfin.by/currency/eur/brest').then(html => {
+            const list = cheerio.load(html.data)
+            let purchase = ''
+            let sale = ''
+            // let rub = ''
+            list('#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)').each((i, element) => {
+            //курс покупки
+            purchase = `${list(element).text()}`
+            }) 
+            list('#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3)').each((i, element) => {
+            //курс продажи
+            sale = `${list(element).text()}`
+            })
+            //показываем курсы валют
+            // if(currency === 'RUB'){
+            //     rub = '100 '
+            // }
+            ctx.replyWithHTML(`По данным Myfin курс EUR\nна сегодня в Бресте\n<b>Курс покупки EUR:</b> ${purchase} BYN\n<b>Курс продажи EUR:</b> ${sale} BYN`)
+            
+        })
+        
+    }catch (error) {
+        console.log(error);
+      }
+}),
+
+bot.action('btn_3', async (ctx) => {
+    try{
+        await ctx.answerCbQuery()
+        await axios.get('https://myfin.by/currency/rub/brest').then(html => {
+            const list = cheerio.load(html.data)
+            let purchase = ''
+            let sale = ''
+            // let rub = ''
+            list('#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)').each((i, element) => {
+            //курс покупки
+            purchase = `${list(element).text()}`
+            }) 
+            list('#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3)').each((i, element) => {
+            //курс продажи
+            sale = `${list(element).text()}`
+            })
+            //показываем курсы валют
+            // if(currency === 'RUB'){
+            //     rub = '100 '
+            // }
+            ctx.replyWithHTML(`По данным Myfin курс 100 RUB\nна сегодня в Бресте\n<b>Курс покупки RUB:</b> ${purchase} BYN\n<b>Курс продажи RUB:</b> ${sale} BYN`)
+            
+        })
+        
+    }catch (error) {
+        console.log(error);
+      }
 })
 //------------------------
 
 //Курсы вылют
 //переменные для ф-ции
-const selectorPurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)'
-const salePurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3)'
-//USD
-const srcParsingUsd = 'https://myfin.by/currency/usd/brest'
-const textUsd = 'USD'
-//EUR
-const srcParsingEur = 'https://myfin.by/currency/eur/brest'
-const textEur = 'EUR'
-//RUB
-const srcParsingRub = 'https://myfin.by/currency/rub/brest'
-const textRub = 'RUB'
+// const selectorPurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2)'
+// const salePurchase = '#workarea > div.content_i.converter > div.bank-info-head.content_i.calc_color > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3)'
+// //USD
+// const srcParsingUsd = 'https://myfin.by/currency/usd/brest'
+// const textUsd = 'USD'
+// //EUR
+// const srcParsingEur = 'https://myfin.by/currency/eur/brest'
+// const textEur = 'EUR'
+// //RUB
+// const srcParsingRub = 'https://myfin.by/currency/rub/brest'
+// const textRub = 'RUB'
 
-//общая функция для валют
-function addAction(btn, src, currency){
-    bot.action(btn, async (ctx) => {
-        try{
-            await ctx.answerCbQuery()
-            await axios.get(src).then(html => {
-                const list = cheerio.load(html.data)
-                let purchase = ''
-                let sale = ''
-                let rub = ''
-                list(selectorPurchase).each((i, element) => {
-                //курс покупки
-                purchase = `${list(element).text()}`
-                }) 
-                list(salePurchase).each((i, element) => {
-                //курс продажи
-                sale = `${list(element).text()}`
-                })
-                //показываем курсы валют
-                if(currency === 'RUB'){
-                    rub = '100 '
-                }
-                ctx.replyWithHTML(`По данным Myfin курс ${rub}${currency}\nна сегодня в Бресте\n<b>Курс покупки ${currency}:</b> ${purchase} BYN\n<b>Курс продажи ${currency}:</b> ${sale} BYN`)
+// //общая функция для валют
+// function addAction(btn, src, currency){
+//     bot.action(btn, async (ctx) => {
+//         try{
+//             await ctx.answerCbQuery()
+//             await axios.get(src).then(html => {
+//                 const list = cheerio.load(html.data)
+//                 let purchase = ''
+//                 let sale = ''
+//                 let rub = ''
+//                 list(selectorPurchase).each((i, element) => {
+//                 //курс покупки
+//                 purchase = `${list(element).text()}`
+//                 }) 
+//                 list(salePurchase).each((i, element) => {
+//                 //курс продажи
+//                 sale = `${list(element).text()}`
+//                 })
+//                 //показываем курсы валют
+//                 if(currency === 'RUB'){
+//                     rub = '100 '
+//                 }
+//                 ctx.replyWithHTML(`По данным Myfin курс ${rub}${currency}\nна сегодня в Бресте\n<b>Курс покупки ${currency}:</b> ${purchase} BYN\n<b>Курс продажи ${currency}:</b> ${sale} BYN`)
                 
-            })
+//             })
             
-        }catch (error) {
-            console.log(error);
-          }
-    })
-}
+//         }catch (error) {
+//             console.log(error);
+//           }
+//     })
+// }
 //вызываем ф-цию
 // addAction('btn_1', srcParsingUsd, textUsd)
 // addAction('btn_2', srcParsingEur, textEur)
